@@ -17,30 +17,7 @@ var evalFn = function(testChromo){
   
 }
 
-ga.run(1000, 1000, evalFn, function(err, data){
+ga.run(100, 200, evalFn, function(err, data){
   if(err) {console.error(err); return;}
   console.log('best -> Fitness: '+ data.fitness + ' iteration: ' + data.iteration + ' Chromo: ' + data.chromo);
 });
-
-// var ga2 = new GA( {maxIterations: 500} );
-
-// ga2.newBestChromo = function(data){
-//   console.log('new best -> Fitness: '+ data.fitness + ' iteration: ' + data.iteration + ' Chromo: ' + data.chromo);
-// }
-
-// var evalFn2 = function(testChromo){
-  
-  
-  
-//   var sum = testChromo.reduce(function(total, ele){
-//     return total+ele;
-//   }, 0);
-  
-//   return sum/testChromo.length;
-  
-// }
-
-// ga2.run(1000, 100, evalFn, function(err, data){
-//   if(err) {console.error(err); return;}
-//   console.dir(data);
-// });
