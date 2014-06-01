@@ -5,8 +5,6 @@ Want to use a binary GA to (maybe?) solve some problems?  Now you can!
 
 # example
 
-Now, put 1,000 2D points into 10 clusters
-
 ```
 var GA = require('canonical-ga');
 
@@ -36,7 +34,7 @@ ga.run( /*population size*/ 500, /*chromosome length*/ 50, evalFn, function(err,
 
 # details
 
-The simple genetic algorithm: an evolutionary algorithm based on binary strings, with crossover along with mutation as variation operator, and fitness-proportionate selection [thanks google!](http://geneura.ugr.es/~jmerelo/evolutionary-computation-perl/x207.html)]
+The simple genetic algorithm: an evolutionary algorithm based on binary strings, with crossover along with mutation as variation operator, and fitness-proportionate selection.  [thanks google!](http://geneura.ugr.es/~jmerelo/evolutionary-computation-perl/x207.html)
 
 # scripts
 
