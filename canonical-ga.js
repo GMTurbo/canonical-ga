@@ -15,7 +15,7 @@ var GA = function(args){
     
     if(args.useElites){
       this.useElites = args.useElites;
-      console.log('useElites = ' + useElites)
+      console.log('useElites = ' + this.useElites)
     }
       
     if(args.maxIterations){
@@ -39,9 +39,9 @@ var GA = function(args){
   
   
   this.run = function(popSize, chromosomeCount, evalFn, cb){
-    process.nextTick(function(){
+    //process.nextTick(function(){
         initialize(popSize, chromosomeCount, evalFn, cb);
-    }.bind(this));
+    //}.bind(this));
   }
   
   
@@ -89,7 +89,11 @@ var GA = function(args){
     var step = function(){
       
         if(finished){
-          cb(null, {fitness: bestFitnessOverAll, bestChromo: bestChromoOverAll});
+          cb(null, {
+                chromo: bestChromoOverAll,
+                fitness: bestFitnessOverAll,
+                iteration: iterationCnt
+            });
           return true;
         }
           
@@ -121,9 +125,20 @@ var GA = function(args){
           finished = true;
         }
         
+        if(this.useElites && iterationCnt!=0){
+          var tmp;
+          for(var i = 0 ; i < population.length; i++){
+            tmp = bestChromoOverAll.slice();
+            mutate(tmp);
+            population[i] = tmp;
+          }
+          
+        }
+        
         evolve();
         
         iterationCnt++;
+        
     }.bind(this);
     
     while(iterationCnt <= this.maxIterationCnt){
@@ -133,7 +148,11 @@ var GA = function(args){
         
     }
     
-    cb(null, {fitness: bestFitnessOverAll, bestChromo: bestChromoOverAll});
+    cb(null, {
+                chromo: bestChromoOverAll,
+                fitness: bestFitnessOverAll,
+                iteration: iterationCnt-1
+            });
     
   }.bind(this)
   
@@ -153,14 +172,7 @@ var GA = function(args){
       children.push(chillens[1]);
     }
     
-    // if(this.useElites){
-    //   var elites = getElites();
-    //   for(i = 0 ;i < elites.length; i++){
-        
-    //   }
-    // }
-    
-    population = children.map(function(curr){ return curr;});
+    population = children.slice();
   }.bind(this)
   
   //need cross-over, mutate, and random spinner functions
@@ -180,8 +192,8 @@ var GA = function(args){
     
     if (rand >= xProp) // if greater than 0.7, then don't cross
     {
-        child1 = population[p1].map(function(ele){ return ele; });
-        child2 = population[p2].map(function(ele){ return ele; });
+        child1 = population[p1].slice();
+        child2 = population[p2].slice();
         mutate(child1); // mutate
         mutate(child2); // mutate
         return [child1, child2];
@@ -224,9 +236,7 @@ var GA = function(args){
       return total;
     },0);
     
-    var normalized = fitnesses.map(function(curr){
-      return curr;
-    });
+    var normalized = fitnesses.slice();
     
     for (i = 0; i < normalized.length; i++)
         normalized[i] /= sum;
@@ -247,9 +257,9 @@ var GA = function(args){
 
 module.exports = GA;
 
-//var GA = require('../js/ga');
+// //var GA = require('../js/ga');
 
-// var ga = new GA();
+// var ga = new GA({useElites: true});
 
 // ga.newBestChromo = function(data){
 //   console.log('new best -> Fitness: '+ data.fitness + ' iteration: ' + data.iteration + ' Chromo: ' + data.chromo);
@@ -266,7 +276,7 @@ module.exports = GA;
   
 // }
 
-// ga.run(1000, 100, evalFn, function(err, data){
-//   if(err) {console.error(err); return;}
-//   console.dir(data);
-// });
+// // ga.run(1000, 100, evalFn, function(err, data){
+// //   if(err) {console.error(err); return;}
+// //   console.dir(data);
+// // });
