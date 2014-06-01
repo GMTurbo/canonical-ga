@@ -3,7 +3,7 @@ var GA = require('../canonical-ga');
 
 var binaryEncoderRing = require('binary-encoder-ring');
 
-var ga = new GA( {maxIterations: 500, useElites: true} );
+var ga = new GA( {maxIterations: 1200, useElites: true} );
 
 ga.newBestChromo = function(data){
   console.log('new best -> Fitness: '+ data.fitness.toFixed(4) + ' iteration: ' + data.iteration);// + ' Chromo: ' + printResult(data.chromo));
@@ -15,7 +15,7 @@ var sentenceLong = "The infinite monkey theorem states that a monkey hitting key
 
 var sentenceSmall = "bEeP bOoP";
 
-var target = ring.encode(sentenceSmall);
+var target = ring.encode(sentenceLong);
 
 var evalFn = function(testChromo){
   
@@ -39,7 +39,7 @@ var printResult = function(chromo){
 
 console.time('ga_run');
 
-ga.run(1000, target.length, evalFn, function(err, data){
+ga.run(100, target.length, evalFn, function(err, data){
   if(err) {console.error(err); return;}
   
   console.timeEnd('ga_run');
