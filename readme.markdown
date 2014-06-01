@@ -59,9 +59,11 @@ runs the example test.
 var GA = require('canonical-ga');
 ```
 
-## var ga = new GA({ maxIterations: 100, tolerance: 1e-3});
+## var ga = new GA({ maxIterations: 100, tolerance: 1e-3, useElites: false });
 
 Create a GA instance, maxIterations defaults to 100, but you can override. tolerance defaults to 1e-3.
+
+useElites allows for enabling of elitism during selection.  This works well if you have a traditional hill climbing eval function.
 
 ## ga.run(populationSize, chromoLength, evalFn, cb);
 
