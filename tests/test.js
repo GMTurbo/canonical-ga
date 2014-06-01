@@ -1,7 +1,7 @@
 
-var GA = require('../js/ga');
+var GA = require('../canonical-ga');
 
-var ga = new GA( {maxIterations: 200} );
+var ga = new GA( {maxIterations: 100} );
 
 ga.newBestChromo = function(data){
   console.log('new best -> Fitness: '+ data.fitness + ' iteration: ' + data.iteration + ' Chromo: ' + data.chromo);
@@ -17,9 +17,9 @@ var evalFn = function(testChromo){
   
 }
 
-ga.run(500, 50, evalFn, function(err, data){
+ga.run(200, 20, evalFn, function(err, data){
   if(err) {console.error(err); return;}
-  console.dir(data);
+  console.log('best -> Fitness: '+ data.fitness + ' iteration: ' + data.iteration + ' Chromo: ' + data.chromo);
 });
 
 // var ga2 = new GA( {maxIterations: 500} );

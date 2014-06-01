@@ -8,7 +8,7 @@ Want to use a binary GA to (maybe?) solve some problems?  Now you can!
 ```
 var GA = require('canonical-ga');
 
-var ga = new GA( {maxIterations: 50} );
+var ga = new GA( {maxIterations: 100} );
 
 ga.newBestChromo = function(data){
   console.log('new best -> Fitness: '+ data.fitness + ' iteration: ' + data.iteration + ' Chromo: ' + data.chromo);
@@ -25,10 +25,21 @@ var evalFn = function(testChromo){
   
 }
 
-ga.run( /*population size*/ 500, /*chromosome length*/ 50, evalFn, function(err, data){
+ga.run( /*population size*/ 200, /*chromosome length*/ 20, evalFn, function(err, data){
   if(err) {console.error(err); return;}
   console.dir(data);
 });
+
+> maxIterations = 100
+> beginnig GA
+> new best -> Fitness: 0.75 iteration: 0 Chromo: 1,0,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1,0
+> new best -> Fitness: 0.8 iteration: 1 Chromo: 1,0,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1,1,0
+> new best -> Fitness: 0.85 iteration: 5 Chromo: 1,1,0,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1
+> new best -> Fitness: 0.9 iteration: 11 Chromo: 1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1
+> new best -> Fitness: 0.95 iteration: 12 Chromo: 1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+> new best -> Fitness: 1 iteration: 34 Chromo: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+
+> best -> Fitness: 1 iteration: 35 Chromo: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 
 ```
 
