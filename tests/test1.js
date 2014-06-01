@@ -21,4 +21,5 @@ var evalFn = function(testChromo){
 ga.run(200, 20, evalFn, function(err, data){
   if(err) {console.error(err); return;}
   console.log('best -> Fitness: '+ data.fitness + ' iteration: ' + data.iteration + ' Chromo: ' + data.chromo);
+  console.log("eval result = " + evalFn(data.chromo));
 });

@@ -1,0 +1,28 @@
+{
+  "name": "canonical-ga",
+  "version": "0.0.0",
+  "description": "canonical genetic algorithm implementation",
+  "main": "canonical-ga.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node tests/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GMTurbo/canonical-ga.git"
+  },
+  "keywords": [
+    "genetic-algorithms"
+  ],
+  "author": "Gabe Testa <gabe.testa@gmail.com> (http://www.github.com/gmturbo)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GMTurbo/canonical-ga/issues"
+  },
+  "homepage": "https://github.com/GMTurbo/canonical-ga",
+  "devDependencies": {
+    "binary-encoder-ring": "0.0.1"
+  }
+}

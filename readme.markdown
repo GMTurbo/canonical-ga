@@ -120,6 +120,157 @@ ga.run(100, 200, evalFn, function(err, data){
 > best -> Fitness: 1 iteration: 60 Chromo: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 
 ```
+#solve for a short sentence
+
+```
+
+var GA = require('canonical-ga');
+
+var binaryEncoderRing = require('binary-encoder-ring');
+
+var ga = new GA( {maxIterations: 500, useElites: true} );
+
+ga.newBestChromo = function(data){
+  console.log('new best -> Fitness: '+ data.fitness.toFixed(4) + ' iteration: ' + data.iteration);// + ' Chromo: ' + printResult(data.chromo));
+}
+
+var ring = new binaryEncoderRing();
+
+var sentenceSmall = "bEeP bOoP";
+
+var target = ring.encode(sentenceSmall);
+
+var evalFn = function(testChromo){
+  
+  //let's write an eval function to make our GA
+  // solve for the sentence 'BeEp BoOp' (@substack for origin)
+  
+  var sum = testChromo.reduce(function(total, ele, index){
+    if(testChromo[index] === target[index])
+      total++;
+    return total;
+  }, 0);
+  
+  if(sum == 0) sum = 1e-9
+  return Math.pow(sum/target.length, 2);
+  
+}
+
+var printResult = function(chromo){
+  return ring.decode(chromo);
+}
+
+console.time('ga_run');
+
+ga.run(1000, target.length, evalFn, function(err, data){
+  if(err) {console.error(err); return;}
+  
+  console.timeEnd('ga_run');
+  
+  console.log('best -> Fitness: '+ data.fitness + ' iteration: ' + data.iteration + ' Chromo: ' + data.chromo);
+  console.log("eval result = " + evalFn(data.chromo));
+  console.log(printResult(data.chromo));
+});
+
+> useElites = true
+> maxIterations = 500
+> beginnig GA
+> new best -> Fitness: 0.4664 iteration: 0
+> new best -> Fitness: 0.5354 iteration: 2
+> new best -> Fitness: 0.6092 iteration: 3
+> new best -> Fitness: 0.6676 iteration: 4
+> new best -> Fitness: 0.7081 iteration: 5
+> new best -> Fitness: 0.7710 iteration: 6
+> new best -> Fitness: 0.8366 iteration: 7
+> new best -> Fitness: 0.9048 iteration: 8
+> new best -> Fitness: 0.9282 iteration: 9
+> new best -> Fitness: 0.9518 iteration: 10
+> new best -> Fitness: 0.9758 iteration: 11
+> new best -> Fitness: 1.0000 iteration: 12
+> ga_run: 2534ms
+> best -> Fitness: 1 iteration: 13 Chromo: 1,0,1,1,0,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,0,1,1,0,1,1,0,0,1,0,1,0,1,0,1,1,0,0,0,0,1,1,1,0,0,0,0,1,0,1,1,0,1,0,0,1,1,0,1,0,1,0,0,1,1,0,0,1,0,1,1,1,0,0,1,1,0,1,0,0,0,1
+> eval result = 1
+> bEeP bOoP
+
+```
+
+#solve for a long sentence
+
+[infinite monkey theorem](https://en.wikipedia.org/wiki/Infinite_monkey_theorem) test
+
+```
+
+var GA = require('canonical-ga');
+
+var binaryEncoderRing = require('binary-encoder-ring');
+
+var ga = new GA( {maxIterations: 500, useElites: true} );
+
+ga.newBestChromo = function(data){
+  console.log('new best -> Fitness: '+ data.fitness.toFixed(4) + ' iteration: ' + data.iteration);// + ' Chromo: ' + printResult(data.chromo));
+}
+
+var ring = new binaryEncoderRing();
+
+var sentenceLong = "The infinite monkey theorem states that a monkey hitting keys at random on a typewriter keyboard for an infinite amount of time will almost surely type a given text, such as the complete works of William Shakespeare."
+
+var target = ring.encode(sentenceLong);
+
+var evalFn = function(testChromo){
+  
+  //let's write an eval function to make our GA
+  // solve for the sentence 'BeEp BoOp' (@substack for origin)
+  
+  var sum = testChromo.reduce(function(total, ele, index){
+    if(testChromo[index] === target[index])
+      total++;
+    return total;
+  }, 0);
+  
+  if(sum == 0) sum = 1e-9
+  return Math.pow(sum/target.length, 2);
+  
+}
+
+var printResult = function(chromo){
+  return ring.decode(chromo);
+}
+
+console.time('ga_run');
+
+ga.run(1000, target.length, evalFn, function(err, data){
+  if(err) {console.error(err); return;}
+  
+  console.timeEnd('ga_run');
+  
+  console.log('best -> Fitness: '+ data.fitness + ' iteration: ' + data.iteration + ' Chromo: ' + data.chromo);
+  console.log("eval result = " + evalFn(data.chromo));
+  console.log(printResult(data.chromo));
+});
+
+
+
+> .
+> .
+> .
+> new best -> Fitness: 0.9890 iteration: 341
+> new best -> Fitness: 0.9900 iteration: 342
+> new best -> Fitness: 0.9910 iteration: 343
+> new best -> Fitness: 0.9920 iteration: 344
+> new best -> Fitness: 0.9930 iteration: 345
+> new best -> Fitness: 0.9940 iteration: 346
+> new best -> Fitness: 0.9950 iteration: 348
+> new best -> Fitness: 0.9960 iteration: 349
+> new best -> Fitness: 0.9970 iteration: 351
+> new best -> Fitness: 0.9980 iteration: 352
+> new best -> Fitness: 0.9990 iteration: 357
+> new best -> Fitness: 1.0000 iteration: 360
+> ga_run: 286325ms <-- not that fast :/
+> best -> Fitness: 1 iteration: 361 Chromo: 1,0,1,0,1,1,0,1,0,0,0,1,1,1,1,1,0,1,0,0,0,1,1,0,1,1,0,0,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,1,0,1,1,0,0,1,1,1,0,1,0,1,1,0,1,1,0,1,0,1,1,0,1,1,0,1,1,1,0,1,1,0,0,1,1,1,0,1,0,1,1,1,0,0,0,0,1,1,0,1,1,0,0,0,1,0,1,0,0,1,0,1,1,0,1,1,0,0,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,1,0,0,0,1,1,1,1,0,1,1,0,1,1,0,0,0,1,0,1,1,0,1,1,0,1,1,1,1,0,1,0,0,1,1,0,1,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,1,1,0,0,0,0,1,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,1,0,1,1,0,1,1,0,0,0,1,1,1,1,0,1,1,0,1,1,0,1,0,1,1,0,1,1,1,0,1,0,0,1,0,0,1,0,0,1,1,0,0,1,0,0,0,1,0,0,1,1,1,0,1,1,0,0,0,0,1,0,1,1,0,0,1,1,0,1,1,0,0,0,1,0,1,0,0,1,0,1,1,0,1,1,0,0,1,1,0,0,0,1,1,1,1,1,1,0,0,1,1,0,0,0,0,1,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,1,1,1,1,0,0,0,1,1,0,1,1,0,0,0,0,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,0,0,0,1,0,1,1,1,0,0,1,1,1,1,1,0,0,0,1,0,1,0,1,0,1,1,1,1,1,1,0,0,1,1,1,1,0,1,0,1,1,1,0,0,0,0,1,1,1,0,0,1,0,1,0,1,0,1,1,0,1,1,0,1,0,1,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,1,0,1,0,0,0,1,1,1,0,0,0,0,1,1,0,0,1,0,0,1,0,0,1,0,0,0,1,0,1,0,0,1,0,1,1,1,0,0,0,0,1,1,0,0,0,1,0,1,1,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,0,1,1,1,1,1,0,0,0,0,1,1,1,0,0,1,0,1,0,1,0,1,1,0,1,1,0,1,0,1,1,1,0,0,0,1,1,1,1,1,1,0,0,1,1,0,0,0,0,1,0,1,1,0,1,0,0,0,1,1,0,0,1,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,1,1,1,1,0,0,1,1,0,1,1,0,0,1,1,0,1,0,1,1,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,1,0,0,0,1,0,1,1,0,0,1,0,1,1,0,0,0,0,1,1,0,0,1,1,1,1,1,0,0,0,1,0,1,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,1,1,1,0,1,1,0,0,1,1,0,1,0,0,1,1,1,0,0,0,0,1,0,1,1,0,0,0,0,1,1,0,0,1,0,1,1,0,1,1,0,0,0,1,0,0,0,0,1,0,1,1,0,1,1,0,0,1,1,0,0,1,0,0,1,1,0,0,1,1,1,0,0,1,0,1,0,1,1,1,0,0,0,0,1,1,0,0,1,0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,1,1,0,0,1,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,1,1,0,1,0,0,1,1,0,1,1,0,0,1,1,0,0,1,0,1,1,0,1,0,1,1,1,1,0,0,1,0,1,0,1,1,1,0,1,1,0,1,0,1,1,0,0,1,1,0,1,1,0,0,0,1,0,0,1,0,1,0,1,1,0,1,0,1,1,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,0,1,1,0,1,0,1,1,1,0,1,1,0,1,1,0,0,0,1,1,1,1,0,1,0,0,1,1,0,0,0,0,1,0,1,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,0,1,0,0,1,1,0,0,0,0,1,0,1,1,1,0,0,0,0,1,1,0,0,0,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1,1,1,0,0,0,0,1,1,0,0,0,1,0,1,1,0,1,1,0,1,1,1,0,1,1,0,0,1,1,0,0,0,0,1,0,1,1,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,1,1,0,1,0,0,0,1,1,0,0,0,1,0,1,0,1,0,1,1,1,1,1,1,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,0,1,1,0,1,1,1,0,1,0,1,0,0,0,1,1,1,0,0,1,1,1,1,1,0,0,0,1,0,1,1,0,0,1,0,1,0,1,1,0,0,1,1,1,0,0,1,1,1,1,1,0,0,1,0,0,1,0,0,0,1,1,1,1,1,0,1,1,0,0,1,1,1,0,1,0,0,1,0,1,1,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,1,1,0,0,1,1,1,1,0,0,0,0,1,1,0,1,0,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,1,1,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,0,0,0,1,1,0,1,1,1,0,0,1,1,1,1,0,0,0,1,0,1,0,1,0,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1,0,1,1,0,0,1,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,1,0,1,1,0,0,0,1,0,0,1,0,1,0,1,1,0,1,1,0,0,1,1,0,0,0,1,0,1,0,0,1,0,0,0,1,1,0,1,0,1,1,1,1,0,0,1,1,1,1,1,0,0,1,0,0,1,0,0,1,0,0,0,1,1,0,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,1,1,0,1,0,0,0,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,1,0,0,1,0,0,1,1,1,0,0,0,0,1,1,0,0,1,0,0,1,1,0,1,1,0,1,1,0,1,0,1,1,0,1,1,1,0,1,0,1,1,0,0,1,0,0,1,1,0,0,1,0,0,0,1,0,1,0,0,1,0,1,1,0,1,1,0,0,1,1,0,0,1,0,1,1,0,0,1,0,0,0,1,0,1,0,0,0,1,1,1,1,0,0,1,1,1,0,0,1,0,0,1,1,0,0,1,0,0,0,1,0,0,1,1,1,0,1,1,0,0,0,1,1,0,1,1,0,0,1,1,1,0,0,1,0,1,1,0,0,1,1,1,1,1,0,0,1,1,1,1,0,1,1,0,0,1,1,0,1,1,0,0,0,1,0,0,1,1,0,1,1,1,0,0,1,1,1,1,1,0,0,1,0,0,1,0,0,0,1,1,1,1,1,0,1,0,0,0,1,1,0,1,1,0,0,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,0,0,1,1,1,0,1,1,1,0,1,1,0,1,1,0,0,0,1,0,1,0,1,1,0,0,0,1,0,0,0,0,1,0,1,1,1,0,0,1,1,1,0,1,1,0,1,0,1,0,1,1,0,0,0,1,0,1,0,0,1,0,1,1,0,1,1,0,0,1,0,0,1,0,0,1,1,0,0,1,0,0,0,1,1,0,0,1,0,0,1,1,1,0,1,1,0,1,1,0,0,0,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0,0,1,1,1,1,0,1,0,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,1,1,0,0,1,1,1,0,1,1,0,1,1,0,0,1,0,0,1,1,0,0,0,1,1,0,1,1,0,0,1,0,0,1,1,1,0,0,0,0,1,1,0,0,0,1,0,1,0,0,0,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,0,1,0,1,1,0,0,1,1,0,1,0,1,1,1,1,1,0,0,0,0,1,1,0,0,1,1,1,1,0,1,0,1,0,1,1,1,0,0,1,0,1,1,0,1,0,0,0,1,1,0,1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,1,0,1,0,1,0,1,1,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,0,1,0,0,0,1,1,0,0,0,1,1,1,1,0,1,1,0,1,1,0,1,0,1,0,1,1,1,1,0,1,0,1
+> eval result = 1
+> The infinite monkey theorem states that a monkey hitting keys at random on a typewriter keyboard for an infinite amount of time will almost surely type a given text, such as the complete works of William Shakespeare.
+
+```
 
 # details
 

@@ -39,9 +39,9 @@ var GA = function(args){
   
   
   this.run = function(popSize, chromosomeCount, evalFn, cb){
-    //process.nextTick(function(){
+    process.nextTick(function(){
         initialize(popSize, chromosomeCount, evalFn, cb);
-    //}.bind(this));
+    }.bind(this));
   }
   
   
@@ -256,27 +256,3 @@ var GA = function(args){
 };
 
 module.exports = GA;
-
-// //var GA = require('../js/ga');
-
-// var ga = new GA({useElites: true});
-
-// ga.newBestChromo = function(data){
-//   console.log('new best -> Fitness: '+ data.fitness + ' iteration: ' + data.iteration + ' Chromo: ' + data.chromo);
-// }
-
-
-// var evalFn = function(testChromo){
-  
-//   var sum = testChromo.reduce(function(total, ele){
-//     return total+ele;
-//   }, 0);
-  
-//   return sum/testChromo.length;
-  
-// }
-
-// // ga.run(1000, 100, evalFn, function(err, data){
-// //   if(err) {console.error(err); return;}
-// //   console.dir(data);
-// // });
