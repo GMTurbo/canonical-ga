@@ -1,5 +1,5 @@
 # Canonical-GA - Canonical Genetic Algorithm Implementation
-
+[![NPM version](https://badge.fury.io/js/canonical-ga.svg)](http://badge.fury.io/js/canonical-ga)
 
 Want to use a binary GA to (maybe?) solve some problems?  Now you can!
 
